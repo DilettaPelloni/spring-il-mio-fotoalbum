@@ -52,6 +52,76 @@
                             <p class="m-0">No items found</p>
                         </div>
                     </div>
+                    <!--EDITOR-->
+                    <div class="col-6">
+                        <h5 class="text-primary">Category editor</h5>
+                        <hr>
+                        <form
+                            id="category-form"
+                            th:action="@{/admin/categories/save}"
+                            method="POST"
+                            th:object="${catObj}"
+                            class="row"
+                        >
+                            <!--ID-->
+                            <input type="hidden" th:field="*{id}">
+                            <!--NOME-->
+                            <div class="col-12 mt-2">
+                                <label for="name" class="form-label">
+                                    Name*
+                                </label>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    th:field="*{name}"
+                                    class="form-control"
+                                    th:errorClass="is-invalid"
+                                >
+                                <div class="form-text">
+                                    Name must have a minimum length of 3 characters and a maximum length of 255 characters.
+                                </div>
+                                <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors('name')}">
+                                            [[${err}]]
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--DESCRIZIONE-->
+                            <div class="col-12 mt-2">
+                                <label for="description" class="form-label">
+                                    Description
+                                </label>
+                                <textarea
+                                        id="description"
+                                        th:field="*{description}"
+                                        class="form-control"
+                                        th:errorClass="is-invalid"
+                                        rows="5"
+                                ></textarea>
+                                <div class="form-text">
+                                    Description has a maximum length of 500 characters.
+                                </div>
+                                <div th:if="${#fields.hasErrors('description')}" class="invalid-feedback">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors('description')}">
+                                            [[${err}]]
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--BOTTONI-->
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-outline-success">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button type="reset" class="btn btn-outline-warning">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </main>
         </div>

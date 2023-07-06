@@ -1,5 +1,6 @@
 package org.lessons.springilmiofotoalbum.controller;
 
+import org.lessons.springilmiofotoalbum.model.Category;
 import org.lessons.springilmiofotoalbum.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ public class CategoryController {
 
     @GetMapping
     public String index(Model model) {
+        model.addAttribute("catObj", new Category());
         model.addAttribute("categories", categoryRepository.findAll());
         return "categories/index";
     }

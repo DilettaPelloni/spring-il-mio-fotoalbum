@@ -1,6 +1,9 @@
 package org.lessons.springilmiofotoalbum.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +15,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Name must not be null or blank")
+    @Size(min=3, max=255, message = "Name must have min 3 and max 255 characters")
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Size(max=500, message = "Description must have max 500 characters")
     @Lob
     private String description;
 
