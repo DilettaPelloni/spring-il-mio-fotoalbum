@@ -19,9 +19,6 @@ public class Photo {
     @Lob
     private String description;
 
-    @Column(nullable = false)
-    private String url;
-
     @Lob
     @Column(length = 16777215, nullable = false)
     private byte[] img;
@@ -55,12 +52,6 @@ public class Photo {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getUrl() {
-        return url;
-    }
-    public void setUrl(String url) {
-        this.url = url;
-    }
     public byte[] getImg() {
         return img;
     }
@@ -78,5 +69,8 @@ public class Photo {
     }
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+    public String getUrl() {
+        return "/files/image/"+getId();
     }
 }

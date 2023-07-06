@@ -42,7 +42,6 @@ public class PhotoSeeder implements CommandLineRunner {
                 photo.setTitle("photo-"+counter); //setto il titolo
                 photo.setDescription("description-"+counter); //setto la descrizione
                 photo.setImg(bytes);//setto l'immagine
-                photo.setUrl("/files/image/"+counter);
                 //setto le categorie
                 List<Category> categories = categoryRepository.findAll(); //tutte le categorie
                 Set<Category> catToAdd = new HashSet<>(); //set delle categorie da aggiungere alla foto
