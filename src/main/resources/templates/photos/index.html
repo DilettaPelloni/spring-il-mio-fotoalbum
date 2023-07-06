@@ -59,7 +59,7 @@
                                 <i th:if="*{visible == false}" class="fa-solid fa-eye-slash"></i>
                             </td>
                             <td>
-                                <img th:src="@{|/files/image/*{id}|}" height="30" th:alt="*{title}">
+                                <img th:src="@{*{url}}" height="30" th:alt="*{title}">
                             </td>
                         </tr>
                     </tbody>

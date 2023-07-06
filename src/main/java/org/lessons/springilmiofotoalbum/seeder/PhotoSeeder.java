@@ -36,12 +36,14 @@ public class PhotoSeeder implements CommandLineRunner {
         for (File f : directory.listFiles()) {
             try {
                 counter ++;
-                Photo photo = new Photo();
-                byte[] bytes = Files.readAllBytes(Path.of(f.getPath()));
-                photo.setTitle("photo-"+counter);
-                photo.setDescription("description-"+counter);
-                photo.setImg(bytes);
-
+                Photo photo = new Photo(); //nuova foto
+                byte[] bytes = Files.readAllBytes(Path.of(f.getPath())); //trasformo il file in un byte[]
+                photo.setId(counter);
+                photo.setTitle("photo-"+counter); //setto il titolo
+                photo.setDescription("description-"+counter); //setto la descrizione
+                photo.setImg(bytes);//setto l'immagine
+                photo.setUrl("/files/image/"+counter);
+                //setto le categorie
                 List<Category> categories = categoryRepository.findAll(); //tutte le categorie
                 Set<Category> catToAdd = new HashSet<>(); //set delle categorie da aggiungere alla foto
                 for (int i = 0; i < 6; i++) { //ne voglio massimo 6
@@ -51,11 +53,12 @@ public class PhotoSeeder implements CommandLineRunner {
                 for (Category cat:catToAdd) { //aggiungo ciascuna categoria del set alla lista di categorie della photo
                     photo.getCategories().add(cat);
                 }
-                photos.add(photo);
+
+                photos.add(photo); //aggiungo la foto alla lista
             } catch (IOException e) {
                 System.out.println("Non riesco a leggere il file");
             }
         }
-        photoRepository.saveAll(photos);
+        photoRepository.saveAll(photos); //salvo la lista di foto al DB
     }
 }

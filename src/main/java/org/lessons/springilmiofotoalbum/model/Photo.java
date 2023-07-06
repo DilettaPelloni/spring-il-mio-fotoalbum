@@ -19,7 +19,7 @@ public class Photo {
     @Lob
     private String description;
 
-
+    @Column(nullable = false)
     private String url;
 
     @Lob
