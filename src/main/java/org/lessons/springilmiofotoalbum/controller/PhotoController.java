@@ -2,16 +2,19 @@ package org.lessons.springilmiofotoalbum.controller;
 
 import jakarta.validation.Valid;
 import org.lessons.springilmiofotoalbum.dto.PhotoDto;
+import org.lessons.springilmiofotoalbum.exceptions.PhotoNotFoundException;
 import org.lessons.springilmiofotoalbum.messages.AlertMessage;
 import org.lessons.springilmiofotoalbum.messages.AlertMessageType;
 import org.lessons.springilmiofotoalbum.model.Photo;
 import org.lessons.springilmiofotoalbum.repository.CategoryRepository;
 import org.lessons.springilmiofotoalbum.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.management.InvalidAttributeValueException;
@@ -39,6 +42,19 @@ public class PhotoController {
         return "/photos/index";
     }
 
+    @GetMapping("/{id}")
+    public String show(
+        @PathVariable Integer id,
+        Model model
+    ) {
+        try {
+            model.addAttribute("photo", photoService.getById(id));
+            return "/photos/show";
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     //CREATE ----------------------------------------------------------------------------------
     @GetMapping("/create")
     public String create(
@@ -60,8 +76,7 @@ public class PhotoController {
         try {
             Photo photo = photoService.create(photoDto, bindingResult);
             redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo " + photo.getTitle() + " created successfully!"));
-//            return "redirect:/admin/photos/" + photo.getId();
-            return "redirect:/admin/photos";
+            return "redirect:/admin/photos/" + photo.getId();
         } catch (InvalidAttributeValueException e) {
             return "/photos/editor";
         }

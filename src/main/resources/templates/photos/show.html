@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head :: head(${photo.title})}"></head>
+<body>
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container-fluid">
+        <div class="row" style="min-height: 90vh">
+            <nav th:replace="~{fragments/sidebar :: aside('photos')}"></nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 p-5" th:object="${photo}">
+                <!--TITOLO PAGINA-->
+                <div th:replace="~{fragments/pageTitle :: pageTitle(*{title})}"></div>
+                <!--TOAST ESITO OPERAZIONI-->
+                <div th:replace="~{fragments/toastMessage :: toastMessage(${message})}"></div>
+                <div class="row">
+                    <!--COLONNA IMMAGINE + BOTTONI-->
+                    <div class="col-4">
+                        <div class="row">
+                            <!--IMMAGINE-->
+                            <div class="col-12 mb-4">
+                                <img th:src="*{getUrl()}" th:alt="*{title}"class="img-fluid">
+                            </div>
+                            <!--BOTTONI-->
+                            <div class="col-12 d-flex gap-2 align-items-start">
+                                <a th:href="@{/admin/photos}" class="btn btn-outline-primary">
+                                    Back to photos
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--COLONNA INFO-->
+                    <div class="col-8 px-4">
+                        <div class="row">
+                            <div class="col-12 mb-5">
+                                <div class="list-group">
+                                    <div class="list-group-item d-flex align-items-center gap-3">
+                                        <i class="fa-solid fa-quote-left text-primary"></i>
+                                        <div class="w-100">
+                                            <h6 class="mb-0">
+                                                Description
+                                            </h6>
+                                            <p class="mb-0 opacity-75 text-break">
+                                                [[*{description}]]
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center gap-3">
+                                        <i class="fa-solid fa-eye text-primary"></i>
+                                        <div class="w-100">
+                                            <h6 class="mb-0">
+                                                Visibility
+                                            </h6>
+                                            <p class="mb-0 opacity-75">
+                                                [[*{visible ? 'Visible' : 'Not visible'}]]
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="list-group-item d-flex align-items-center gap-3">
+                                        <i class="fa-solid fa-tags text-primary"></i>
+                                        <div class="w-100">
+                                            <h6 class="mb-2">
+                                                Categories
+                                            </h6>
+                                            <span
+                                                th:each="cat : *{categories}"
+                                                class="badge text-bg-primary me-2"
+                                            >
+                                                [[${cat.name}]]
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

@@ -8,7 +8,7 @@
         <div class="row" style="min-height: 90vh">
             <nav th:replace="~{fragments/sidebar :: aside('photos')}"></nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 p-5">
-                <!--TITOLO-->
+                <!--TITOLO PAGINA-->
                 <div th:replace="~{fragments/pageTitle :: pageTitle(${isEdit ? 'Edit ' + photo.title : 'New photo'})}"></div>
                 <!--FORM-->
                 <form
