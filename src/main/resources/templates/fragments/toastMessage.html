@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div th:fragment="toastMessage(message)" class="toast-container position-fixed top-50 start-50 translate-middle p-3" th:if="${message != null}">
+        <div
+            id="liveToast"
+            class="toast show"
+            th:classAppend="${#strings.equalsIgnoreCase(message.type, 'SUCCESS')} ? 'text-bg-success' : 'text-bg-danger'"
+            role="alert" aria-live="assertive" aria-atomic="true"
+        >
+            <div class="toast-header">
+                <i
+                    class="fa-solid me-auto"
+                    th:classAppend="${#strings.equalsIgnoreCase(message.type, 'SUCCESS')} ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'"
+                ></i>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                [[${message.message}]]
+            </div>
+        </div>
+    </div>
+</body>
+</html>

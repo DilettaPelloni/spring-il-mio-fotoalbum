@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <nav th:fragment="aside(page)" class="col-md-3 col-lg-2 d-md-block sidebar collapse bg-dark navbar-dark shadow-sm">
+        <div class="position-sticky pt-3">
+            <h6 class="my-4 text-light lead">Dashboard</h6>
+            <ul class="nav nav-pills flex-column fw-medium text-decoration-none">
+                <li class="nav-item">
+                    <a
+                        th:href="@{/admin/photos}"
+                        class="nav-link"
+                        th:classappend="${page == 'photos' ? 'active' : ''}"
+                    >
+                        <i class="fa-solid fa-camera"></i>
+                        Photos
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+</body>
+</html>
