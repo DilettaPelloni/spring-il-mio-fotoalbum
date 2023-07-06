@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragments/head :: head('Editor')}"></head>
 <body th:with="isEdit = ${photo.id != null}">
-
     <header th:replace="~{fragments/header :: header}"></header>
     <div class="container-fluid">
         <div class="row" style="min-height: 90vh">
@@ -89,8 +88,8 @@
                                     </div>
                                 </div>
                                 <!--ANTEPRIMA IMMAGINE-->
-                                <div th:if="${isEdit}" class="col-6 mt-2">
-                                    <img th:src="@{*{url}}" height="200">
+                                <div th:if="${isEdit}" class="col-6 mt-2 text-center">
+                                    <img th:src="@{*{getUrl()}}" height="200">
                                 </div>
                                 <!--VISIBILITÁ-->
                                 <div class="col-12 mt-4">

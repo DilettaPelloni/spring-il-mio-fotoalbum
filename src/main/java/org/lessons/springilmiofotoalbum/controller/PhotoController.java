@@ -82,4 +82,18 @@ public class PhotoController {
         }
     }
 
+    //UPDATE ----------------------------------------------------------------------------------
+    @GetMapping("/edit/{id}")
+    public String edit(
+        @PathVariable Integer id,
+        Model model
+    ) {
+        try{
+            model.addAttribute("catList", categoryRepository.findAll());
+            model.addAttribute("photo", photoService.getDtoById(id));
+            return "/photos/editor";
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
 }

@@ -39,6 +39,11 @@ public class PhotoService {
         }
     }
 
+    public PhotoDto getDtoById(Integer id) throws PhotoNotFoundException {
+        Photo photo = getById(id);
+        return fromPhotoToDto(photo);
+    }
+
     //CREATE --------------------------------------------------------------------------------
     public Photo create(PhotoDto photoDto, BindingResult bindingResult) throws InvalidAttributeValueException {
         Photo photo = fromDtoToPhoto(photoDto);
@@ -91,5 +96,15 @@ public class PhotoService {
             }
         }
         return bytes;
+    }
+
+    private PhotoDto fromPhotoToDto(Photo photo) {
+        PhotoDto result = new PhotoDto();
+        result.setId(photo.getId());
+        result.setTitle(photo.getTitle());
+        result.setDescription(photo.getDescription());
+        result.setVisible(photo.isVisible());
+        result.setCategories(photo.getCategories());
+        return result;
     }
 }

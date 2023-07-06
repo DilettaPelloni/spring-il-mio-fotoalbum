@@ -63,4 +63,7 @@ public class PhotoDto {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+    public String getUrl() {
+        return "/files/image/"+getId();
+    }
 }
