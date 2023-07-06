@@ -20,6 +20,8 @@ public class Photo {
     @Column(nullable = false, unique = true)
     private String url;
 
+    @Lob
+    @Column(length = 16777215)
     private byte[] img;
 
     private boolean visible = true;
