@@ -72,12 +72,12 @@ public class PhotoController {
         Model model,
         RedirectAttributes redirectAttributes
     ) {
-        model.addAttribute("catList", categoryRepository.findAll());
         try {
             Photo photo = photoService.create(photoDto, bindingResult);
             redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo " + photo.getTitle() + " created successfully!"));
             return "redirect:/admin/photos/" + photo.getId();
         } catch (InvalidAttributeValueException e) {
+            model.addAttribute("catList", categoryRepository.findAll());
             return "/photos/editor";
         }
     }
@@ -91,6 +91,26 @@ public class PhotoController {
         try{
             model.addAttribute("catList", categoryRepository.findAll());
             model.addAttribute("photo", photoService.getDtoById(id));
+            return "/photos/editor";
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PostMapping("/edit/{id}")
+    public String update(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute("photo") PhotoDto photoDto,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            Photo photo = photoService.update(id, photoDto, bindingResult);
+            redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo " + photo.getTitle() + " updated successfully!"));
+            return "redirect:/admin/photos/" + photo.getId();
+        } catch (InvalidAttributeValueException e) {
+            model.addAttribute("catList", categoryRepository.findAll());
             return "/photos/editor";
         } catch (PhotoNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

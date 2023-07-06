@@ -1,5 +1,6 @@
 package org.lessons.springilmiofotoalbum.service;
 
+
 import org.lessons.springilmiofotoalbum.dto.PhotoDto;
 import org.lessons.springilmiofotoalbum.exceptions.PhotoNotFoundException;
 import org.lessons.springilmiofotoalbum.model.Photo;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.management.InvalidAttributeValueException;
 import java.io.IOException;
 import java.util.List;
@@ -72,6 +72,37 @@ public class PhotoService {
             photoToSave.setVisible(photo.isVisible());
             photoToSave.setCategories(photo.getCategories());
             return photoRepository.save(photoToSave);
+        }
+    }
+
+    //UPDATE --------------------------------------------------------------------------------
+    public Photo update(Integer id, PhotoDto photoDto, BindingResult bindingResult) throws PhotoNotFoundException, InvalidAttributeValueException {
+        Photo photo = fromDtoToPhoto(photoDto);
+        return update(id, photo, bindingResult);
+    }
+
+    public Photo update(Integer id, Photo photo, BindingResult bindingResult) throws PhotoNotFoundException, InvalidAttributeValueException {
+        Photo photoToEdit = getById(id);
+        if(photo.getImg() == null) {
+            bindingResult.addError(new FieldError(
+                    "photo",
+                    "img",
+                    photo.getImg(),
+                    false,
+                    null,
+                    null,
+                    "Image must not be null"
+            ));
+        }
+        if(bindingResult.hasErrors()) {
+            throw new InvalidAttributeValueException();
+        } else {
+            photoToEdit.setTitle(photo.getTitle());
+            photoToEdit.setDescription(photo.getDescription());
+            photoToEdit.setImg(photo.getImg());
+            photoToEdit.setVisible(photo.isVisible());
+            photoToEdit.setCategories(photo.getCategories());
+            return photoRepository.save(photoToEdit);
         }
     }
 
