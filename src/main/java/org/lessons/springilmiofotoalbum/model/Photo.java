@@ -1,7 +1,9 @@
 package org.lessons.springilmiofotoalbum.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "photos")
@@ -25,6 +27,14 @@ public class Photo {
     private byte[] img;
 
     private boolean visible = true;
+
+    @ManyToMany
+    @JoinTable(
+            name = "category_photo",
+            joinColumns = @JoinColumn(name = "photo_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories = new ArrayList<>();
 
     //GETTER E SETTER ------------------------------------------------------------------------------
     public Integer getId() {
@@ -62,5 +72,11 @@ public class Photo {
     }
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+    public List<Category> getCategories() {
+        return categories;
+    }
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

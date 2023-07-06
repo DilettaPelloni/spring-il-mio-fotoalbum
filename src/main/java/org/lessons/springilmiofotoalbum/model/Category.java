@@ -1,6 +1,8 @@
 package org.lessons.springilmiofotoalbum.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -15,6 +17,9 @@ public class Category {
 
     @Lob
     private String description;
+
+    @ManyToMany(mappedBy = "categories")
+    private List<Photo> photos = new ArrayList<>();
 
     //GETTER E SETTER ------------------------------------------------------------------------------
     public Integer getId() {
@@ -34,5 +39,11 @@ public class Category {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 }
