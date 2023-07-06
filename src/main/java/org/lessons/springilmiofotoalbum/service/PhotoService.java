@@ -95,6 +95,12 @@ public class PhotoService {
         }
     }
 
+    //DELETE --------------------------------------------------------------------------------
+    public void deleteById(Integer id) throws PhotoNotFoundException{
+        Photo photo = getById(id);
+        photoRepository.delete(photo);
+    }
+
     //UTILITY --------------------------------------------------------------------------------
     private Photo fromDtoToPhoto(PhotoDto photoDto) {
         Photo result = new Photo();
