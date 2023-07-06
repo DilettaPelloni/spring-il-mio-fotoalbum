@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head :: head('Categories')}"></head>
+<body>
+    <header th:replace="~{fragments/header :: header}"></header>
+
+    <div class="container-fluid">
+        <div class="row" style="min-height: 90vh">
+            <nav th:replace="~{fragments/sidebar :: aside('categories')}"></nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 p-5">
+                <!--TITOLO PAGINA-->
+                <div th:replace="~{fragments/pageTitle :: pageTitle('Categories')}"></div>
+                <!--TOAST ESITO OPERAZIONI-->
+                <div th:replace="~{fragments/toastMessage :: toastMessage(${message})}"></div>
+                <div class="row">
+                    <!--ELENCO CATEGORIE-->
+                    <div class="col-6">
+                        <table th:if="${categories.size() > 0}" class="table table-striped">
+                            <caption>
+                                <h6 th:if="${categories.size() > 0}">
+                                    Items found:
+                                    <span class="badge bg-primary">[[${categories.size()}]]</span>
+                                </h6>
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider border-secondary-subtle">
+                                <tr th:each="cat : ${categories}" th:object="${cat}" class="align-middle">
+                                    <td th:text="*{name}"></td>
+                                    <td th:text="*{description}" class="text-break"></td>
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            <a th:href="@{#}" class="btn btn-outline-success btn-sm">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </a>
+                                            <form th:action="@{#}" method="POST">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div th:unless="${categories.size() > 0}" class="alert alert-primary" role="alert">
+                            <p class="m-0">No items found</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

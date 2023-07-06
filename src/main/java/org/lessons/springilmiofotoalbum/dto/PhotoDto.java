@@ -1,6 +1,6 @@
 package org.lessons.springilmiofotoalbum.dto;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.lessons.springilmiofotoalbum.model.Category;
