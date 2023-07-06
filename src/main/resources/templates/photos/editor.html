@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head :: head('Editor')}"></head>
+<body th:with="isEdit = ${photo.id != null}">
+
+    <header th:replace="~{fragments/header :: header}"></header>
+    <div class="container-fluid">
+        <div class="row" style="min-height: 90vh">
+            <nav th:replace="~{fragments/sidebar :: aside('photos')}"></nav>
+            <main class="col-md-9 ms-sm-auto col-lg-10 p-5">
+                <!--TITOLO-->
+                <div th:replace="~{fragments/pageTitle :: pageTitle(${isEdit ? 'Edit ' + photo.title : 'New photo'})}"></div>
+                <!--FORM-->
+                <form
+                    id="photo-form"
+                    th:action="@{${isEdit ? '/admin/photos/edit/' + photo.id : '/admin/photos/create'}}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    th:object="${photo}"
+                    class="row"
+                >
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="row">
+                                <!--TITOLO-->
+                                <div class="col-12 mt-2">
+                                    <label for="title" class="form-label">
+                                        Title*
+                                    </label>
+                                    <input
+                                            id="title"
+                                            type="text"
+                                            th:field="*{title}"
+                                            class="form-control"
+                                            th:errorClass="is-invalid"
+                                    >
+                                    <div class="form-text">
+                                        Title must have a minimum length of 3 characters and a maximum length of 255 characters.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('title')}">
+                                                [[${err}]]
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--DESCRIZIONE-->
+                                <div class="col-12 mt-2">
+                                    <label for="description" class="form-label">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        id="description"
+                                        th:field="*{description}"
+                                        class="form-control"
+                                        th:errorClass="is-invalid"
+                                        rows="5"
+                                    ></textarea>
+                                    <div class="form-text">
+                                        Description must have a maximum length of 1600 characters.
+                                    </div>
+                                    <div th:if="${#fields.hasErrors('description')}" class="invalid-feedback">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('description')}">
+                                                [[${err}]]
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--IMMAGINE-->
+                                <div class="mt-2" th:classappend="${isEdit ? 'col-6' : 'col-12'}">
+                                    <label for="img" class="form-label">
+                                        Image*
+                                    </label>
+                                    <input
+                                        id="img"
+                                        type="file"
+                                        class="form-control"
+                                        th:field="*{img}"
+                                        th:errorClass="is-invalid"
+                                    >
+                                    <div th:if="${#fields.hasErrors('img')}" class="invalid-feedback">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('img')}">
+                                                [[${err}]]
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--ANTEPRIMA IMMAGINE-->
+                                <div th:if="${isEdit}" class="col-6 mt-2">
+                                    <img th:src="@{*{url}}" height="200">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <h5 class="text-primary">Categories</h5>
+                            <hr>
+                            <div th:each="cat : ${catList}" class="form-check">
+                                <input
+                                    type="checkbox"
+                                    th:id="|cat-${cat.id}|"
+                                    th:value="${cat.id}"
+                                    th:field="*{categories}"
+                                    class="form-check-input"
+                                >
+                                <label class="form-check-label" th:for="|cat-*{id}|">
+                                    [[${cat.name}]]
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--BOTTONI-->
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-outline-success">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button type="reset" class="btn btn-outline-warning">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                        <a th:href="@{/admin/photos}" class="btn btn-outline-primary">
+                            Back
+                        </a>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>

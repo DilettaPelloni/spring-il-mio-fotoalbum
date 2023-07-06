@@ -15,7 +15,7 @@
                 <div th:replace="~{fragments/toastMessage :: toastMessage(${message})}"></div>
                 <!--ACCESSO A CREATE E FILTRO-->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <a th:href="@{/pizzas}" class="btn btn-primary" title="add photo">
+                    <a th:href="@{/admin/photos/create}" class="btn btn-primary" title="add photo">
                         <i class="fa-solid fa-plus"></i>
                     </a>
                     <form th:action="@{/admin/photos}" method="GET">
