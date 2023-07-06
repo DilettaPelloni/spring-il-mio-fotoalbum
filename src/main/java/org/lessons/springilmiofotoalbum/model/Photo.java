@@ -17,11 +17,11 @@ public class Photo {
     @Lob
     private String description;
 
-    @Column(nullable = false, unique = true)
+
     private String url;
 
     @Lob
-    @Column(length = 16777215)
+    @Column(length = 16777215, nullable = false)
     private byte[] img;
 
     private boolean visible = true;
