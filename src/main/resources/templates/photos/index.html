@@ -46,6 +46,8 @@
                             <th>Title</th>
                             <th>Description</th>
                             <th>Visible</th>
+                            <th>Preview</th>
+
                         </tr>
                     </thead>
                     <tbody class="table-group-divider border-secondary-subtle">
@@ -55,6 +57,9 @@
                             <td>
                                 <i th:if="*{visible == true}" class="fa-solid fa-eye"></i>
                                 <i th:if="*{visible == false}" class="fa-solid fa-eye-slash"></i>
+                            </td>
+                            <td>
+                                <img th:src="@{|/files/image/*{id}|}" height="30" th:alt="*{title}">
                             </td>
                         </tr>
                     </tbody>
