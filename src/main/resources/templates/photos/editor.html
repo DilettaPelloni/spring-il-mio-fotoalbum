@@ -92,6 +92,19 @@
                                 <div th:if="${isEdit}" class="col-6 mt-2">
                                     <img th:src="@{*{url}}" height="200">
                                 </div>
+                                <!--VISIBILITÁ-->
+                                <div class="col-12 mt-4">
+                                    <div class="form-check">
+                                        <input
+                                            type="checkbox"
+                                            id="visible"
+                                            th:field="*{visible}"
+                                            name="visible"
+                                            class="form-check-input"
+                                        >
+                                        <label class="form-check-label" for="visible">Visible</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-4">

@@ -76,6 +76,7 @@ public class PhotoService {
         result.setTitle(photoDto.getTitle());
         result.setDescription(photoDto.getDescription());
         result.setImg(fromMpfToBytes(photoDto.getImg()));
+        result.setVisible(photoDto.isVisible());
         result.setCategories(photoDto.getCategories());
         return result;
     }

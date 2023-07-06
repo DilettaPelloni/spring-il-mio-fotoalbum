@@ -22,6 +22,8 @@ public class PhotoDto {
 
     private MultipartFile img;
 
+    private boolean visible = true;
+
     private List<Category> categories = new ArrayList<>();
 
     //GETTER E SETTER ------------------------------------------------------------------------------
@@ -48,6 +50,12 @@ public class PhotoDto {
     }
     public void setImg(MultipartFile img) {
         this.img = img;
+    }
+    public boolean isVisible() {
+        return visible;
+    }
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
     public List<Category> getCategories() {
         return categories;
