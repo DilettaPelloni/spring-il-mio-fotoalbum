@@ -83,23 +83,12 @@ public class PhotoService {
 
     public Photo update(Integer id, Photo photo, BindingResult bindingResult) throws PhotoNotFoundException, InvalidAttributeValueException {
         Photo photoToEdit = getById(id);
-        if(photo.getImg() == null) {
-            bindingResult.addError(new FieldError(
-                    "photo",
-                    "img",
-                    photo.getImg(),
-                    false,
-                    null,
-                    null,
-                    "Image must not be null"
-            ));
-        }
         if(bindingResult.hasErrors()) {
             throw new InvalidAttributeValueException();
         } else {
             photoToEdit.setTitle(photo.getTitle());
             photoToEdit.setDescription(photo.getDescription());
-            photoToEdit.setImg(photo.getImg());
+            if(photo.getImg() != null) { photoToEdit.setImg(photo.getImg()); }
             photoToEdit.setVisible(photo.isVisible());
             photoToEdit.setCategories(photo.getCategories());
             return photoRepository.save(photoToEdit);
