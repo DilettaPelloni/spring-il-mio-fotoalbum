@@ -29,6 +29,7 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#messageModal">
                     Send message
                 </button>
+                <!-- MODALE CON FORM PER MESSAGGIO -->
                 <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -81,7 +82,8 @@
                             </div>
                         </div>
                     </div>
-                  </div>
+                </div>
+                <!-- FORM DI RICERCA -->
                 <form @submit.prevent="getFilteredPhotos()" class="w-50">
                     <div class="input-group">
                         <input
@@ -109,7 +111,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ photo.title }}</h5>
                             <p class="card-text">{{ photo.description }}</p>
-                            <span v-for="cat in photo.categories" class="badge text-bg-primary">
+                            <span v-for="cat in photo.categories" class="badge text-bg-primary me-2">
                                 {{ cat.name }}
                             </span>
                         </div>

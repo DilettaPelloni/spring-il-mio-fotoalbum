@@ -3,14 +3,14 @@ const { createApp } = Vue;
 createApp({
     data() {
         return {
-            url: "http://localhost:8080/api/v1/",
-            photos: [],
-            keyword:"",
-            imageUrl: "http://localhost:8080/files/image/",
-            email: "",
-            message: "",
-            displaySuccess: false,
-            errors: [],
+            url: "http://localhost:8080/api/v1/", //url per richieste API
+            imageUrl: "http://localhost:8080/files/image/", //url per immagini
+            photos: [], //lista di foto da mostrare
+            keyword:"", //chiave di ricerca per filtrare foto
+            email: "", //contenuto del campo email del form per inviare messaggi
+            message: "", //contenuto del campo message del form per inviare messaggi
+            displaySuccess: false, //mostra messaggio di successo nel form per inviare messaggi 
+            errors: [], //elenco degli errori nella compilazione del form
         }//return
     },//data
     computed: {
