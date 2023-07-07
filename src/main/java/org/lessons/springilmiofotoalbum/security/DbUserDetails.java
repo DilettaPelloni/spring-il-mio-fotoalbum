@@ -16,7 +16,7 @@ public class DbUserDetails implements UserDetails {
     private final Set<GrantedAuthority> authorities;
 
     public DbUserDetails(User user) {
-        this.username = user.getPassword();
+        this.username = user.getEmail();
         this.password = user.getPassword();
         this.authorities = new HashSet<>();
         for (Role r: user.getRoles()) {
