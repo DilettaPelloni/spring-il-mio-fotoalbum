@@ -33,6 +33,10 @@ public class Photo {
     )
     private List<Category> categories = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     //GETTER E SETTER ------------------------------------------------------------------------------
     public Integer getId() {
         return id;
@@ -69,6 +73,12 @@ public class Photo {
     }
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
     public String getUrl() {
         return "/files/image/"+getId();

@@ -2,8 +2,10 @@ package org.lessons.springilmiofotoalbum.seeder;
 
 import org.lessons.springilmiofotoalbum.model.Category;
 import org.lessons.springilmiofotoalbum.model.Photo;
+import org.lessons.springilmiofotoalbum.model.User;
 import org.lessons.springilmiofotoalbum.repository.CategoryRepository;
 import org.lessons.springilmiofotoalbum.repository.PhotoRepository;
+import org.lessons.springilmiofotoalbum.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -24,6 +26,8 @@ public class PhotoSeeder implements CommandLineRunner {
     PhotoRepository photoRepository;
     @Autowired
     CategoryRepository categoryRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -52,8 +56,11 @@ public class PhotoSeeder implements CommandLineRunner {
                 for (Category cat:catToAdd) { //aggiungo ciascuna categoria del set alla lista di categorie della photo
                     photo.getCategories().add(cat);
                 }
-
-                photos.add(photo); //aggiungo la foto alla lista
+                //setto lo user
+                List<User> users = userRepository.findAll();
+                photo.setUser(users.get(new Random().nextInt(0, users.size())));
+                //aggiungo la foto alla lista
+                photos.add(photo);
             } catch (IOException e) {
                 System.out.println("Non riesco a leggere il file");
             }
