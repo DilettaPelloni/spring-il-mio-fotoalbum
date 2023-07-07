@@ -35,10 +35,10 @@
                                     <td th:text="*{description}" class="text-break"></td>
                                     <td>
                                         <div class="d-flex gap-1">
-                                            <a th:href="@{#}" class="btn btn-outline-success btn-sm">
+                                            <a th:href="@{/admin/categories(edit=*{id})}" class="btn btn-outline-success btn-sm">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <form th:action="@{#}" method="POST">
+                                            <form th:action="@{|/admin/categories/delete/*{id}|}" method="POST">
                                                 <button type="submit" class="btn btn-outline-danger btn-sm">
                                                     <i class="fa-solid fa-trash-can"></i>
                                                 </button>
