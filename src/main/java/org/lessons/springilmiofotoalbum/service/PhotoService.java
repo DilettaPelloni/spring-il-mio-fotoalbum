@@ -28,7 +28,42 @@ public class PhotoService {
     @Autowired
     UserRepository userRepository;
 
+
+    //VERIFICA UTENTE --------------------------------------------------------------------------------
+    public Photo userIsAllowed(Integer id, String email) throws UsernameNotFoundException, UserNotAllowedException, PhotoNotFoundException {
+        Photo photo = getById(id);
+        User user = getUserByEmail(email);
+        if(photo.getUser().getId().equals(user.getId())) {
+            return photo;
+        } else {
+            throw new UserNotAllowedException("You are not allowed to be here.");
+        }
+    }
+
+    //CONVERSIONI --------------------------------------------------------------------------------
+    //restituisce un PhotoDto data una foto
+    public PhotoDto fromPhotoToDto(Photo photo) {
+        PhotoDto result = new PhotoDto();
+        result.setId(photo.getId());
+        result.setTitle(photo.getTitle());
+        result.setDescription(photo.getDescription());
+        result.setVisible(photo.isVisible());
+        result.setCategories(photo.getCategories());
+        return result;
+    }
+    //restituisce una foto dato un PhotoDto
+    public Photo fromDtoToPhoto(PhotoDto photoDto) {
+        Photo result = new Photo();
+        result.setTitle(photoDto.getTitle());
+        result.setDescription(photoDto.getDescription());
+        result.setImg(fromMpfToBytes(photoDto.getImg()));
+        result.setVisible(photoDto.isVisible());
+        result.setCategories(photoDto.getCategories());
+        return result;
+    }
+
     //READ --------------------------------------------------------------------------------
+    //restituisce tutte le foto, eventualmente filtrate
     public List<Photo> getAll(Optional<String> keyword) {
         if(keyword.isEmpty()){
             return photoRepository.findAll();
@@ -37,6 +72,7 @@ public class PhotoService {
         }
     }
 
+    //restituisce tutte le foto visibili, eventualmente filtrate
     public List<Photo> getAllVisible(Optional<String> keyword) {
         if(keyword.isEmpty()){
             return photoRepository.findByVisibleTrue();
@@ -45,6 +81,7 @@ public class PhotoService {
         }
     }
 
+    //restituisce tutte le foto dell'utente loggato, eventualmente filtrate
     public List<Photo> getAllOfActiveUser(Optional<String> keyword, String email) throws UsernameNotFoundException{
         User user = getUserByEmail(email);
         if(keyword.isEmpty()){
@@ -54,6 +91,7 @@ public class PhotoService {
         }
     }
 
+    //restituisce una foto dato l'id
     public Photo getById(Integer id) throws PhotoNotFoundException {
         Optional<Photo> photo = photoRepository.findById(id);
         if(photo.isPresent()) {
@@ -63,19 +101,10 @@ public class PhotoService {
         }
     }
 
+    //restituisce un PhotoDto dato l'id
     public PhotoDto getDtoById(Integer id) throws PhotoNotFoundException {
         Photo photo = getById(id);
         return fromPhotoToDto(photo);
-    }
-
-    public Photo getByIdVerifyUser(Integer id, String email) throws PhotoNotFoundException, UsernameNotFoundException, UserNotAllowedException {
-        Photo photo = getById(id);
-        User user = getUserByEmail(email);
-        if(photo.getUser().getId().equals(user.getId())) {
-            return photo;
-        } else {
-            throw new UserNotAllowedException("You are not allowed to be here.");
-        }
     }
 
     //CREATE --------------------------------------------------------------------------------
@@ -111,11 +140,12 @@ public class PhotoService {
     }
 
     //UPDATE --------------------------------------------------------------------------------
+    //aggiorna una foto partendo da un PhotoDto
     public Photo update(Integer id, PhotoDto photoDto, BindingResult bindingResult) throws PhotoNotFoundException, InvalidAttributeValueException {
         Photo photo = fromDtoToPhoto(photoDto);
         return update(id, photo, bindingResult);
     }
-
+    //aggiorna una foto
     public Photo update(Integer id, Photo photo, BindingResult bindingResult) throws PhotoNotFoundException, InvalidAttributeValueException {
         Photo photoToEdit = getById(id);
         if(bindingResult.hasErrors()) {
@@ -131,20 +161,18 @@ public class PhotoService {
     }
 
     //DELETE --------------------------------------------------------------------------------
-    public void deleteById(Integer id) throws PhotoNotFoundException{
-        Photo photo = getById(id);
+    //elimina una foto dato l'id
+    public void delete(Photo photo) throws PhotoNotFoundException{
         photoRepository.delete(photo);
     }
 
     //UTILITY --------------------------------------------------------------------------------
-    private Photo fromDtoToPhoto(PhotoDto photoDto) {
-        Photo result = new Photo();
-        result.setTitle(photoDto.getTitle());
-        result.setDescription(photoDto.getDescription());
-        result.setImg(fromMpfToBytes(photoDto.getImg()));
-        result.setVisible(photoDto.isVisible());
-        result.setCategories(photoDto.getCategories());
-        return result;
+    private User getUserByEmail(String email) throws UsernameNotFoundException{
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()){
+            throw new UsernameNotFoundException("user with email "+email+" not found");
+        }
+        return user.get();
     }
 
     private byte[] fromMpfToBytes(MultipartFile mpf) {
@@ -159,21 +187,4 @@ public class PhotoService {
         return bytes;
     }
 
-    private PhotoDto fromPhotoToDto(Photo photo) {
-        PhotoDto result = new PhotoDto();
-        result.setId(photo.getId());
-        result.setTitle(photo.getTitle());
-        result.setDescription(photo.getDescription());
-        result.setVisible(photo.isVisible());
-        result.setCategories(photo.getCategories());
-        return result;
-    }
-
-    private User getUserByEmail(String email) throws UsernameNotFoundException{
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isEmpty()){
-            throw new UsernameNotFoundException("user with email "+email+" not found");
-        }
-        return user.get();
-    }
 }

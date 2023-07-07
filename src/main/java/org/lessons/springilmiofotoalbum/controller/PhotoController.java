@@ -60,7 +60,8 @@ public class PhotoController {
         Model model
     ) {
         try {
-            model.addAttribute("photo", photoService.getByIdVerifyUser(id, authentication.getName()));
+            Photo photo = photoService.userIsAllowed(id, authentication.getName());
+            model.addAttribute("photo", photo);
             return "/photos/show";
         } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -103,14 +104,18 @@ public class PhotoController {
     @GetMapping("/edit/{id}")
     public String edit(
         @PathVariable Integer id,
+        Authentication authentication,
         Model model
     ) {
         try{
+            Photo photo = photoService.userIsAllowed(id, authentication.getName());
             model.addAttribute("catList", categoryRepository.findAll());
-            model.addAttribute("photo", photoService.getDtoById(id));
+            model.addAttribute("photo", photoService.fromPhotoToDto(photo));
             return "/photos/editor";
-        } catch (PhotoNotFoundException e) {
+        } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UserNotAllowedException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
         }
     }
 
@@ -119,18 +124,22 @@ public class PhotoController {
             @PathVariable Integer id,
             @Valid @ModelAttribute("photo") PhotoDto photoDto,
             BindingResult bindingResult,
+            Authentication authentication,
             Model model,
             RedirectAttributes redirectAttributes
     ) {
         try {
-            Photo photo = photoService.update(id, photoDto, bindingResult);
-            redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo " + photo.getTitle() + " updated successfully!"));
-            return "redirect:/admin/photos/" + photo.getId();
+            photoService.userIsAllowed(id, authentication.getName());
+            Photo updatedPhoto = photoService.update(id, photoDto, bindingResult);
+            redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo " + updatedPhoto.getTitle() + " updated successfully!"));
+            return "redirect:/admin/photos/" + updatedPhoto.getId();
         } catch (InvalidAttributeValueException e) {
             model.addAttribute("catList", categoryRepository.findAll());
             return "/photos/editor";
-        } catch (PhotoNotFoundException e) {
+        } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UserNotAllowedException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
         }
     }
 
@@ -138,14 +147,18 @@ public class PhotoController {
     @PostMapping("/delete/{id}")
     public String delete(
         @PathVariable Integer id,
+        Authentication authentication,
         RedirectAttributes redirectAttributes
     ){
         try {
-            photoService.deleteById(id);
+            Photo photo = photoService.userIsAllowed(id, authentication.getName());
+            photoService.delete(photo);
             redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo with id "+id+" deleted successfully!"));
             return "redirect:/admin/photos";
-        } catch (PhotoNotFoundException e) {
+        } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UserNotAllowedException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
         }
     }
 }
