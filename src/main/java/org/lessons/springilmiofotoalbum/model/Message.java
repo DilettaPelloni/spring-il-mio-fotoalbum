@@ -1,6 +1,7 @@
 package org.lessons.springilmiofotoalbum.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "messages")
@@ -10,9 +11,11 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Email is required")
     @Column(nullable = false)
     private String email;
 
+    @NotBlank(message = "Message is required")
     @Lob
     @Column(nullable = false)
     private String message;

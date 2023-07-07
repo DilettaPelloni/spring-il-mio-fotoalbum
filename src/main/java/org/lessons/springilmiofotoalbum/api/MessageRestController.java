@@ -3,7 +3,11 @@ package org.lessons.springilmiofotoalbum.api;
 import jakarta.validation.Valid;
 import org.lessons.springilmiofotoalbum.model.Message;
 import org.lessons.springilmiofotoalbum.repository.MessageRepository;
+import org.lessons.springilmiofotoalbum.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,10 +19,14 @@ public class MessageRestController {
     MessageRepository messageRepository;
 
     @PostMapping("/create")
-    public Message sendMessage(
-        @Valid @RequestBody Message message
+    public ResponseEntity<ApiResponse> sendMessage(
+        @Valid @RequestBody Message message,
+        BindingResult bindingResult
     ) {
-        return messageRepository.save(message);
+        if(bindingResult.hasErrors()) {
+            return new ResponseEntity<>(new ApiResponse<>(null, bindingResult.getAllErrors()), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new ApiResponse<>(messageRepository.save(message)), HttpStatus.CREATED);
     }
 
 }

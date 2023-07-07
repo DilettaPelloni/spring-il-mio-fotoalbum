@@ -45,11 +45,31 @@
                                         </div>
                                         <div class="col-12 mt-3">
                                             <label for="email" class="form-label">Your email address:</label>
-                                            <input type="email" class="form-control" id="email" v-model="email">
+                                            <input type="email" class="form-control" id="email" v-model="email" :class="{'is-invalid': emailHasErrors}">
+                                            <div v-if="emailHasErrors" class="invalid-feedback">
+                                                <ul>
+                                                    <li v-for="message in getEmailErrorMessages">
+                                                        {{ message }}
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div class="col-12 mt-3">
                                             <label for="message" class="form-label">Your message:</label>
-                                            <textarea class="form-control" id="message" rows="3" v-model="message"></textarea>
+                                            <textarea class="form-control" id="message" rows="3" v-model="message" :class="{'is-invalid': messageHasErrors}"></textarea>
+                                            <div v-if="messageHasErrors" class="invalid-feedback">
+                                                <ul>
+                                                    <li v-for="message in getMessageErrorMessages">
+                                                        {{ message }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-4" v-if="displaySuccess">
+                                            <div class="alert alert-success m-0" role="alert">
+                                                <i class="fa-solid fa-thumbs-up text-success me-3"></i>
+                                                Message sent successfully!
+                                            </div>
                                         </div>
                                         <div class="col-12 mt-4">
                                             <button type="submit" class="btn btn-primary">
