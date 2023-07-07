@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head :: head('404')}"></head>
+
+<body>
+<main class="vh-100 container-fluid d-flex align-items-center bg-primary-subtle">
+    <div class="row w-50 mx-auto d-flex align-items-center">
+        <div  class="col-7">
+            <h1 class="fw-bolder text-primary" style="font-size: 12rem">
+                404
+            </h1>
+            <p th:if="${message != 'No message available'}" class="mb-5 display-6 text-primary">
+                [[${message}]]
+            </p>
+            <a th:href="@{/}" class="btn btn-outline-primary">
+                Back to home
+            </a>
+        </div>
+        <div class="col-5">
+            <img th:src="@{/images/logo.png}" alt="not-found" class="img-fluid">
+        </div>
+    </div>
+</main>
+</body>
+</html>
