@@ -3,6 +3,7 @@ package org.lessons.springilmiofotoalbum.service;
 
 import org.lessons.springilmiofotoalbum.dto.PhotoDto;
 import org.lessons.springilmiofotoalbum.exceptions.PhotoNotFoundException;
+import org.lessons.springilmiofotoalbum.exceptions.UserNotAllowedException;
 import org.lessons.springilmiofotoalbum.model.Photo;
 import org.lessons.springilmiofotoalbum.model.User;
 import org.lessons.springilmiofotoalbum.repository.PhotoRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.management.InvalidAttributeValueException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -66,13 +68,23 @@ public class PhotoService {
         return fromPhotoToDto(photo);
     }
 
-    //CREATE --------------------------------------------------------------------------------
-    public Photo create(PhotoDto photoDto, BindingResult bindingResult) throws InvalidAttributeValueException {
-        Photo photo = fromDtoToPhoto(photoDto);
-        return create(photo, bindingResult);
+    public Photo getByIdVerifyUser(Integer id, String email) throws PhotoNotFoundException, UsernameNotFoundException, UserNotAllowedException {
+        Photo photo = getById(id);
+        User user = getUserByEmail(email);
+        if(photo.getUser().getId().equals(user.getId())) {
+            return photo;
+        } else {
+            throw new UserNotAllowedException("You are not allowed to be here.");
+        }
     }
 
-    public Photo create(Photo photo, BindingResult bindingResult) throws InvalidAttributeValueException {
+    //CREATE --------------------------------------------------------------------------------
+    public Photo create(PhotoDto photoDto, BindingResult bindingResult, String email) throws InvalidAttributeValueException, UsernameNotFoundException {
+        Photo photo = fromDtoToPhoto(photoDto);
+        return create(photo, bindingResult, email);
+    }
+
+    public Photo create(Photo photo, BindingResult bindingResult, String email) throws InvalidAttributeValueException, UsernameNotFoundException {
         if(photo.getImg() == null) { //se non c'è l'immagine sparo l'errore
             bindingResult.addError(new FieldError(
                     "photo",
@@ -93,6 +105,7 @@ public class PhotoService {
             photoToSave.setImg(photo.getImg());
             photoToSave.setVisible(photo.isVisible());
             photoToSave.setCategories(photo.getCategories());
+            photoToSave.setUser(getUserByEmail(email));
             return photoRepository.save(photoToSave);
         }
     }

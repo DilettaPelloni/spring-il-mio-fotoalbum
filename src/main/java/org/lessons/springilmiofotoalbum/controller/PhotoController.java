@@ -3,6 +3,7 @@ package org.lessons.springilmiofotoalbum.controller;
 import jakarta.validation.Valid;
 import org.lessons.springilmiofotoalbum.dto.PhotoDto;
 import org.lessons.springilmiofotoalbum.exceptions.PhotoNotFoundException;
+import org.lessons.springilmiofotoalbum.exceptions.UserNotAllowedException;
 import org.lessons.springilmiofotoalbum.messages.AlertMessage;
 import org.lessons.springilmiofotoalbum.messages.AlertMessageType;
 import org.lessons.springilmiofotoalbum.model.Photo;
@@ -55,13 +56,16 @@ public class PhotoController {
     @GetMapping("/{id}")
     public String show(
         @PathVariable Integer id,
+        Authentication authentication,
         Model model
     ) {
         try {
-            model.addAttribute("photo", photoService.getById(id));
+            model.addAttribute("photo", photoService.getByIdVerifyUser(id, authentication.getName()));
             return "/photos/show";
-        } catch (PhotoNotFoundException e) {
+        } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (UserNotAllowedException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
         }
     }
 
@@ -79,16 +83,19 @@ public class PhotoController {
     public String store(
         @Valid @ModelAttribute("photo") PhotoDto photoDto,
         BindingResult bindingResult,
+        Authentication authentication,
         Model model,
         RedirectAttributes redirectAttributes
     ) {
         try {
-            Photo photo = photoService.create(photoDto, bindingResult);
+            Photo photo = photoService.create(photoDto, bindingResult, authentication.getName());
             redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo " + photo.getTitle() + " created successfully!"));
             return "redirect:/admin/photos/" + photo.getId();
         } catch (InvalidAttributeValueException e) {
             model.addAttribute("catList", categoryRepository.findAll());
             return "/photos/editor";
+        } catch (UsernameNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
