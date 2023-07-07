@@ -20,7 +20,7 @@ public class PhotoRestController {
     public List<Photo> getAll(
         @RequestParam Optional<String> keyword
     ) {
-        return photoService.getAll(keyword);
+        return photoService.getAllVisible(keyword);
     }
 
 }

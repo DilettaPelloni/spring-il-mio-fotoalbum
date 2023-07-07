@@ -30,6 +30,14 @@ public class PhotoService {
         }
     }
 
+    public List<Photo> getAllVisible(Optional<String> keyword) {
+        if(keyword.isEmpty()){
+            return photoRepository.findByVisibleTrue();
+        } else {
+            return photoRepository.findByVisibleTrueAndTitleContainingIgnoreCase(keyword.get());
+        }
+    }
+
     public Photo getById(Integer id) throws PhotoNotFoundException {
         Optional<Photo> photo = photoRepository.findById(id);
         if(photo.isPresent()) {
