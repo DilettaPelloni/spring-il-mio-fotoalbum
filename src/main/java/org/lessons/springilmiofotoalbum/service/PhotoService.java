@@ -4,8 +4,11 @@ package org.lessons.springilmiofotoalbum.service;
 import org.lessons.springilmiofotoalbum.dto.PhotoDto;
 import org.lessons.springilmiofotoalbum.exceptions.PhotoNotFoundException;
 import org.lessons.springilmiofotoalbum.model.Photo;
+import org.lessons.springilmiofotoalbum.model.User;
 import org.lessons.springilmiofotoalbum.repository.PhotoRepository;
+import org.lessons.springilmiofotoalbum.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -20,6 +23,8 @@ public class PhotoService {
 
     @Autowired
     PhotoRepository photoRepository;
+    @Autowired
+    UserRepository userRepository;
 
     //READ --------------------------------------------------------------------------------
     public List<Photo> getAll(Optional<String> keyword) {
@@ -35,6 +40,15 @@ public class PhotoService {
             return photoRepository.findByVisibleTrue();
         } else {
             return photoRepository.findByVisibleTrueAndTitleContainingIgnoreCase(keyword.get());
+        }
+    }
+
+    public List<Photo> getAllOfActiveUser(Optional<String> keyword, String email) throws UsernameNotFoundException{
+        User user = getUserByEmail(email);
+        if(keyword.isEmpty()){
+            return photoRepository.findByUserId(user.getId());
+        } else {
+            return photoRepository.findByUserIdAndTitleContainingIgnoreCase(user.getId(), keyword.get());
         }
     }
 
@@ -140,5 +154,13 @@ public class PhotoService {
         result.setVisible(photo.isVisible());
         result.setCategories(photo.getCategories());
         return result;
+    }
+
+    private User getUserByEmail(String email) throws UsernameNotFoundException{
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()){
+            throw new UsernameNotFoundException("user with email "+email+" not found");
+        }
+        return user.get();
     }
 }

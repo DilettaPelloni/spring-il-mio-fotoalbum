@@ -1,4 +1,4 @@
 INSERT INTO `categories` (`id`, `description`, `name`) VALUES (NULL, 'Sunset photos', 'Sunset'), (NULL, 'Hands photos', 'Hands'), (NULL, 'Food photos', 'Food'), (NULL, 'People photos', 'People'), (NULL, 'Nature photos', 'Nature'), (NULL, 'Landscape photos', 'Landscape'), (NULL, 'Portrait photos', 'Portrait'), (NULL, 'Animal photos', 'Animal'), (NULL, 'Urban photos', 'Urban'), (NULL, 'Seaside photos', 'Seaside'), (NULL, 'Night photos', 'Night')
 INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`) VALUES (NULL, 'testUser1@email.com', 'User1', 'Test1', '{noop}user1'), (NULL, 'testUser2@email.com', 'User2', 'Test2', '{noop}user2')
 INSERT INTO `roles` (`id`, `name`) VALUES (NULL, 'ADMIN')
-INSERT INTO `role_user` (`user_id`, `role_id`) VALUES ('1', '1')
+INSERT INTO `role_user` (`user_id`, `role_id`) VALUES ('1', '1'), ('2', '1')
