@@ -5,6 +5,7 @@ import org.lessons.springilmiofotoalbum.dto.PhotoDto;
 import org.lessons.springilmiofotoalbum.exceptions.PhotoNotFoundException;
 import org.lessons.springilmiofotoalbum.exceptions.UserNotAllowedException;
 import org.lessons.springilmiofotoalbum.model.Photo;
+import org.lessons.springilmiofotoalbum.model.Role;
 import org.lessons.springilmiofotoalbum.model.User;
 import org.lessons.springilmiofotoalbum.repository.PhotoRepository;
 import org.lessons.springilmiofotoalbum.repository.UserRepository;
@@ -28,19 +29,19 @@ public class PhotoService {
     @Autowired
     UserRepository userRepository;
 
-
     //VERIFICA UTENTE --------------------------------------------------------------------------------
+    //cerca una foto e verifica che appartenga all'utente loggato, poi restituisce la foto (per non fare doppie query nei metodi che verranno usati dopo di lui)
     public Photo userIsAllowed(Integer id, String email) throws UsernameNotFoundException, UserNotAllowedException, PhotoNotFoundException {
         Photo photo = getById(id);
         User user = getUserByEmail(email);
-        if(photo.getUser().getId().equals(user.getId())) {
+        if(isSuperAdmin(user) || photo.getUser().getId().equals(user.getId())) {
             return photo;
         } else {
             throw new UserNotAllowedException("You are not allowed to be here.");
         }
     }
 
-    //CONVERSIONI --------------------------------------------------------------------------------
+    //CONVERTITORI DTO/PHOTO --------------------------------------------------------------------------------
     //restituisce un PhotoDto data una foto
     public PhotoDto fromPhotoToDto(Photo photo) {
         PhotoDto result = new PhotoDto();
@@ -72,7 +73,7 @@ public class PhotoService {
         }
     }
 
-    //restituisce tutte le foto visibili, eventualmente filtrate
+    //restituisce tutte le foto visibili, eventualmente filtrate (serve solo all'API)
     public List<Photo> getAllVisible(Optional<String> keyword) {
         if(keyword.isEmpty()){
             return photoRepository.findByVisibleTrue();
@@ -81,13 +82,17 @@ public class PhotoService {
         }
     }
 
-    //restituisce tutte le foto dell'utente loggato, eventualmente filtrate
+    //restituisce tutte le foto dell'utente loggato (tutte se è il superadmin), eventualmente filtrate
     public List<Photo> getAllOfActiveUser(Optional<String> keyword, String email) throws UsernameNotFoundException{
         User user = getUserByEmail(email);
-        if(keyword.isEmpty()){
-            return photoRepository.findByUserId(user.getId());
+        if(isSuperAdmin(user)) {
+            return getAll(keyword);
         } else {
-            return photoRepository.findByUserIdAndTitleContainingIgnoreCase(user.getId(), keyword.get());
+            if(keyword.isEmpty()){
+                return photoRepository.findByUserId(user.getId());
+            } else {
+                return photoRepository.findByUserIdAndTitleContainingIgnoreCase(user.getId(), keyword.get());
+            }
         }
     }
 
@@ -185,6 +190,17 @@ public class PhotoService {
             }
         }
         return bytes;
+    }
+
+    //restituisce vero se l'utente dato è il super admin
+    private boolean isSuperAdmin(User user) {
+        boolean flag = false;
+        for (Role r:user.getRoles()) {
+            if(r.getName().equals("SUPERADMIN")) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
 }

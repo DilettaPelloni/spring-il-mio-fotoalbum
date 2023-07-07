@@ -25,7 +25,7 @@
                 </li>
                 <li class="nav-item">
                     <a
-                        sec:authorize="hasAuthority('ADMIN')"
+                        sec:authorize="hasAnyAuthority('ADMIN','SUPERADMIN')"
                         th:href="@{/admin/photos}"
                         class="nav-link"
                         th:classappend="${page == 'photos' ? 'active' : ''}"
@@ -36,7 +36,7 @@
                 </li>
                 <li class="nav-item">
                     <a
-                        sec:authorize="hasAuthority('ADMIN')"
+                        sec:authorize="hasAnyAuthority('ADMIN','SUPERADMIN')"
                         th:href="@{/admin/categories}"
                         class="nav-link"
                         th:classappend="${page == 'categories' ? 'active' : ''}"
