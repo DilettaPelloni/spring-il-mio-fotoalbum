@@ -38,18 +38,18 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form @submit.prevent>
+                                <form @submit.prevent="sendMessage()">
                                     <div class="row px-3 py-2">
                                         <div class="col-12">
                                             <p class="form-text m-0">All fields are required</p>
                                         </div>
                                         <div class="col-12 mt-3">
                                             <label for="email" class="form-label">Your email address:</label>
-                                            <input type="email" class="form-control" id="email">
+                                            <input type="email" class="form-control" id="email" v-model="email">
                                         </div>
                                         <div class="col-12 mt-3">
                                             <label for="message" class="form-label">Your message:</label>
-                                            <textarea class="form-control" id="message" rows="3"></textarea>
+                                            <textarea class="form-control" id="message" rows="3" v-model="message"></textarea>
                                         </div>
                                         <div class="col-12 mt-4">
                                             <button type="submit" class="btn btn-primary">
