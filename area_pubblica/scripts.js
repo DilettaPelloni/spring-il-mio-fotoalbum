@@ -6,6 +6,7 @@ createApp({
             url: "http://localhost:8080/api/v1/photos",
             photos: [],
             keyword:"",
+            imageUrl: "http://localhost:8080/files/image/"
         }//return
     },//data
     methods: {
