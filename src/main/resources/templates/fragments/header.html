@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -15,7 +15,12 @@
             <span class="ms-3 fw-bolder fs-3">PhotoAlbum - Dashboard</span>
         </a>
         <div>
-            <h4 class="text-white">Login</h4>
+            <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-outline-light">
+                Login
+            </a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="btn btn-outline-light">
+                Logout
+            </a>
         </div>
     </header>
 

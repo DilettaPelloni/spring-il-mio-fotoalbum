@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head :: head('')}"></head>
+
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="container-fluid">
+    <div class="row" style="min-height: 90vh">
+        <nav th:replace="~{fragments/sidebar :: aside('home')}"></nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-4">
+            <div class="row my-5">
+                <div class="col text-center my-5">
+                    <img th:src="@{/images/logo.png}" width="150">
+                    <h1 class="display-3 fw-bolder text-primary">
+                        Welcome to PhotoAlbum!
+                    </h1>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

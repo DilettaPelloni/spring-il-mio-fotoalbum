@@ -10,7 +10,17 @@ public class MainController {
 
     @GetMapping
     public String home() {
-        return "redirect:/admin/photos";
+        return "/generals/home";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "/generals/login";
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "/generals/logout";
     }
 
 }

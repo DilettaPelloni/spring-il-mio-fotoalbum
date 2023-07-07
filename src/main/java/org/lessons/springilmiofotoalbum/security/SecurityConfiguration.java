@@ -35,8 +35,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests()
             .requestMatchers("/admin/**").hasAuthority("ADMIN")
             .requestMatchers("/**").permitAll()
-            .and().formLogin()
-            .and().logout();
+            .and().formLogin().loginPage("/login")
+            .and().logout().logoutSuccessUrl("/");
         return http.build();
     }
 
