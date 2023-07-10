@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/head :: head(' - Login')}"></head>
+<head th:replace="~{/fragments/head :: head('Login')}"></head>
 <body class="bg-primary-subtle">
 <main class="vh-100 container">
   <div class="row h-100 d-flex align-items-center">
@@ -10,10 +10,11 @@
     <div class="col-lg-6 col-sm-12 px-5">
       <h1 class="mb-5 text-primary">LOGIN</h1>
       <form th:action="@{/login}" method="post">
+        <div th:replace="~{fragments/toastMessage :: toastMessage(${message})}"></div>
         <div class="mb-3">
           <label for="email" class="form-label">
-            Username
-          </label>:
+            E-mail:
+          </label>
           <input
                   type="email"
                   id="email"
@@ -24,8 +25,8 @@
         </div>
         <div class="mb-5">
           <label for="password" class="form-label">
-            Password
-          </label>:
+            Password:
+          </label>
           <input
                 type="password"
                 id="password"

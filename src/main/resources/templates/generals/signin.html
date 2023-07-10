@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head :: head('Sign In')}"></head>
+<body class="bg-primary-subtle">
+<main class="vh-100 container">
+    <div class="row h-100 d-flex align-items-center">
+        <!--IMMAGINE-->
+        <div class="col-lg-6 col-sm-12 text-center">
+            <img th:src="@{/images/logo.png}" class="img-fluid">
+        </div>
+        <!--FORM-->
+        <div class="col-lg-6 col-sm-12 px-5">
+            <h1 class="mb-5 text-primary">SIGN IN</h1>
+            <form th:action="@{/signin}" method="post" th:object="${user}">
+                <!--NOME-->
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">
+                        First name :
+                    </label>
+                    <input
+                        type="text"
+                        th:field="*{firstName}"
+                        id="firstName"
+                        class="form-control"
+                        th:errorClass="is-invalid"
+                    />
+                    <div th:if="${#fields.hasErrors('firstName')}" class="invalid-feedback">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('firstName')}">
+                                [[${err}]]
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--COGNOME-->
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">
+                        Last name :
+                    </label>
+                    <input
+                        type="text"
+                        th:field="*{lastName}"
+                        id="lastName"
+                        class="form-control"
+                        th:errorClass="is-invalid"
+                    />
+                    <div th:if="${#fields.hasErrors('lastName')}" class="invalid-feedback">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('lastName')}">
+                                [[${err}]]
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--EMAIL-->
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        E-mail* :
+                    </label>
+                    <input
+                        type="email"
+                        th:field="*{email}"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        th:errorClass="is-invalid"
+                    />
+                    <div th:if="${#fields.hasErrors('email')}" class="invalid-feedback">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('email')}">
+                                [[${err}]]
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <label for="password" class="form-label">
+                        Password* :
+                    </label>
+                    <input
+                        type="password"
+                        th:field="*{password}"
+                        id="password"
+                        name="password"
+                        class="form-control"
+                        th:errorClass="is-invalid"
+                    />
+                    <div th:if="${#fields.hasErrors('password')}" class="invalid-feedback">
+                        <ul>
+                            <li th:each="err : ${#fields.errors('password')}">
+                                [[${err}]]
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="Sign in" class="btn btn-primary"/>
+                    <a th:href="@{/}" class="btn btn-outline-primary">
+                        Back to home
+                    </a>
+                </div>
+                <div>
+                    <p>Already registered? <a th:href="@{/login}">Login</a></p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
