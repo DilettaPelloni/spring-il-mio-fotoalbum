@@ -42,7 +42,7 @@ public class PhotoService {
     }
 
     //CONVERTITORI DTO/PHOTO --------------------------------------------------------------------------------
-    //restituisce un PhotoDto data una foto
+    //PUBBLICO (viene usato dal controller) - restituisce un PhotoDto data una foto
     public PhotoDto fromPhotoToDto(Photo photo) {
         PhotoDto result = new PhotoDto();
         result.setId(photo.getId());
@@ -52,8 +52,8 @@ public class PhotoService {
         result.setCategories(photo.getCategories());
         return result;
     }
-    //restituisce una foto dato un PhotoDto
-    public Photo fromDtoToPhoto(PhotoDto photoDto) {
+    //PRIVATO - restituisce una foto dato un PhotoDto
+    private Photo fromDtoToPhoto(PhotoDto photoDto) {
         Photo result = new Photo();
         result.setTitle(photoDto.getTitle());
         result.setDescription(photoDto.getDescription());
@@ -64,14 +64,6 @@ public class PhotoService {
     }
 
     //READ --------------------------------------------------------------------------------
-    //restituisce tutte le foto, eventualmente filtrate
-    public List<Photo> getAll(Optional<String> keyword) {
-        if(keyword.isEmpty()){
-            return photoRepository.findAll();
-        } else {
-            return photoRepository.findByTitleContainingIgnoreCase(keyword.get());
-        }
-    }
 
     //restituisce tutte le foto visibili, eventualmente filtrate (serve solo all'API)
     public List<Photo> getAllVisible(Optional<String> keyword) {
@@ -79,6 +71,15 @@ public class PhotoService {
             return photoRepository.findByVisibleTrue();
         } else {
             return photoRepository.findByVisibleTrueAndTitleContainingIgnoreCase(keyword.get());
+        }
+    }
+
+    //restituisce tutte le foto, eventualmente filtrate
+    public List<Photo> getAll(Optional<String> keyword) {
+        if(keyword.isEmpty()){
+            return photoRepository.findAll();
+        } else {
+            return photoRepository.findByTitleContainingIgnoreCase(keyword.get());
         }
     }
 
@@ -104,12 +105,6 @@ public class PhotoService {
         } else {
             throw new PhotoNotFoundException("Photo with id "+id+" not found");
         }
-    }
-
-    //restituisce un PhotoDto dato l'id
-    public PhotoDto getDtoById(Integer id) throws PhotoNotFoundException {
-        Photo photo = getById(id);
-        return fromPhotoToDto(photo);
     }
 
     //CREATE --------------------------------------------------------------------------------
@@ -202,5 +197,12 @@ public class PhotoService {
         }
         return flag;
     }
+
+    //INUTTILIZZATI ----------------------------------------------------------------------------
+    //restituisce un PhotoDto dato l'id
+//    public PhotoDto getDtoById(Integer id) throws PhotoNotFoundException {
+//        Photo photo = getById(id);
+//        return fromPhotoToDto(photo);
+//    }
 
 }

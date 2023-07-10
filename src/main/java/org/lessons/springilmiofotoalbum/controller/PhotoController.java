@@ -129,7 +129,7 @@ public class PhotoController {
             RedirectAttributes redirectAttributes
     ) {
         try {
-            photoService.userIsAllowed(id, authentication.getName());
+            photoService.userIsAllowed(id, authentication.getName()); //per lanciare l'eccezione nel caso in cui l'utente stesse cercando di modificare una foto non sua
             Photo updatedPhoto = photoService.update(id, photoDto, bindingResult);
             redirectAttributes.addFlashAttribute("message", new AlertMessage(AlertMessageType.SUCCESS, "Photo " + updatedPhoto.getTitle() + " updated successfully!"));
             return "redirect:/admin/photos/" + updatedPhoto.getId();
