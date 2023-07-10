@@ -81,6 +81,8 @@ createApp({
                 if(response.data.success == true) {
                     this.errors = [];
                     this.displaySuccess = true;
+                    this.email = "";
+                    this.message = "";
                 }
             } catch(error) {
                 this.errors = error.response.data.errors;
