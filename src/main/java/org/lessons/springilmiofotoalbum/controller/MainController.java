@@ -9,6 +9,8 @@ import org.lessons.springilmiofotoalbum.repository.RoleRepository;
 import org.lessons.springilmiofotoalbum.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,15 +56,15 @@ public class MainController {
     }
 
     //REGISTRAZIONE ---------------------------------------------------------------------------------
-    @GetMapping("/signin")
-    public String signin(
+    @GetMapping("/signup")
+    public String signup(
         Model model
     ) {
         model.addAttribute("user", new User());
-        return "/generals/signin";
+        return "/generals/signup";
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/signup")
     public String register(
         @Valid @ModelAttribute("user") User user,
         BindingResult bindingResult,
@@ -80,9 +82,10 @@ public class MainController {
             ));
         }
         if(bindingResult.hasErrors()) {
-            return "/generals/signin";
+            return "/generals/signup";
         }
-        user.setPassword("{noop}"+user.getPassword());
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword("{bcrypt}"+encoder.encode(user.getPassword()));
         Optional<Role> role = roleRepository.findByName("ADMIN");
         user.getRoles().add(role.get());
         userRepository.save(user);

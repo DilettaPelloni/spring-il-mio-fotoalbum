@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/head :: head('Sign In')}"></head>
+<head th:replace="~{/fragments/head :: head('Sign Up')}"></head>
 <body class="bg-primary-subtle">
 <main class="vh-100 container">
     <div class="row h-100 d-flex align-items-center">
@@ -10,8 +10,8 @@
         </div>
         <!--FORM-->
         <div class="col-lg-6 col-sm-12 px-5">
-            <h1 class="mb-5 text-primary">SIGN IN</h1>
-            <form th:action="@{/signin}" method="post" th:object="${user}">
+            <h1 class="mb-5 text-primary">SIGN UP</h1>
+            <form th:action="@{/signup}" method="post" th:object="${user}">
                 <!--NOME-->
                 <div class="mb-3">
                     <label for="firstName" class="form-label">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <input type="submit" value="Sign in" class="btn btn-primary"/>
+                    <input type="submit" value="Sign up" class="btn btn-primary"/>
                     <a th:href="@{/}" class="btn btn-outline-primary">
                         Back to home
                     </a>
