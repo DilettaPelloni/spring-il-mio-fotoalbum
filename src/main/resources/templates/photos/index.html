@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 
 <head th:replace="~{/fragments/head :: head('Photos')}"></head>
 
@@ -47,6 +47,9 @@
                             <th>Description</th>
                             <th>Visible</th>
                             <th>Preview</th>
+                            <th sec:authorize="hasAuthority('SUPERADMIN')">
+                                User
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
@@ -61,6 +64,10 @@
                             <td>
                                 <img th:src="@{*{getUrl()}}" height="30" th:alt="*{title}">
                             </td>
+                            <td
+                                sec:authorize="hasAuthority('SUPERADMIN')"
+                                th:text="*{user.getEmail()}"
+                            ></td>
                             <td class="d-flex gap-2">
                                 <a th:href="@{|/admin/photos/*{id}|}" class="btn btn-outline-primary">
                                     <i class="fa-solid fa-camera"></i>
