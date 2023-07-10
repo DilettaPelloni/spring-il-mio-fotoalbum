@@ -106,7 +106,7 @@
                 Items found:
                 <span class="badge bg-primary">{{ photos.length }}</span>
             </h6>
-            <div class="row">
+            <div class="row gy-3">
                 <div class="col-4" v-for="photo in photos">
                     <div class="card">
                         <img :src="imageUrl.concat(photo.id)" class="card-img-top" :alt="photo.title">
