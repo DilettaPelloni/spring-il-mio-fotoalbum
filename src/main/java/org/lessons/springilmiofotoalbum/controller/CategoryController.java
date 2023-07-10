@@ -8,6 +8,7 @@ import org.lessons.springilmiofotoalbum.model.Photo;
 import org.lessons.springilmiofotoalbum.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,7 @@ public class CategoryController {
     @GetMapping
     public String index(
         @RequestParam(value = "edit") Optional<Integer> id,
+        Authentication authentication,
         Model model
     ) {
         Category catObj;
@@ -44,6 +46,7 @@ public class CategoryController {
         }
         model.addAttribute("catObj", catObj);
         model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("user", authentication.getName());
         return "categories/index";
     }
 
@@ -52,6 +55,7 @@ public class CategoryController {
     public String save(
         @Valid @ModelAttribute("catObj") Category category,
         BindingResult bindingResult,
+        Authentication authentication,
         Model model,
         RedirectAttributes redirectAttributes
     ) {
@@ -79,6 +83,7 @@ public class CategoryController {
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryRepository.findAll());
+            model.addAttribute("user", authentication.getName());
             return "categories/index";
         }
 

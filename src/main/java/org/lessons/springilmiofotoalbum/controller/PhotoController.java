@@ -44,6 +44,7 @@ public class PhotoController {
     ) {
         try {
             model.addAttribute("photos", photoService.getAllOfActiveUser(keyword, authentication.getName()));
+            model.addAttribute("user", authentication.getName());
             if(keyword.isPresent()) {
                 model.addAttribute("keyword", keyword.get());
             }
@@ -62,6 +63,7 @@ public class PhotoController {
         try {
             Photo photo = photoService.userIsAllowed(id, authentication.getName());
             model.addAttribute("photo", photo);
+            model.addAttribute("user", authentication.getName());
             return "/photos/show";
         } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -73,10 +75,12 @@ public class PhotoController {
     //CREATE ----------------------------------------------------------------------------------
     @GetMapping("/create")
     public String create(
+        Authentication authentication,
         Model model
     ) {
         model.addAttribute("catList", categoryRepository.findAll());
         model.addAttribute("photo", new PhotoDto());
+        model.addAttribute("user", authentication.getName());
         return "/photos/editor";
     }
 
@@ -94,6 +98,7 @@ public class PhotoController {
             return "redirect:/admin/photos/" + photo.getId();
         } catch (InvalidAttributeValueException e) {
             model.addAttribute("catList", categoryRepository.findAll());
+            model.addAttribute("user", authentication.getName());
             return "/photos/editor";
         } catch (UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -111,6 +116,7 @@ public class PhotoController {
             Photo photo = photoService.userIsAllowed(id, authentication.getName());
             model.addAttribute("catList", categoryRepository.findAll());
             model.addAttribute("photo", photoService.fromPhotoToDto(photo));
+            model.addAttribute("user", authentication.getName());
             return "/photos/editor";
         } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -135,6 +141,7 @@ public class PhotoController {
             return "redirect:/admin/photos/" + updatedPhoto.getId();
         } catch (InvalidAttributeValueException e) {
             model.addAttribute("catList", categoryRepository.findAll());
+            model.addAttribute("user", authentication.getName());
             return "/photos/editor";
         } catch (PhotoNotFoundException | UsernameNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
