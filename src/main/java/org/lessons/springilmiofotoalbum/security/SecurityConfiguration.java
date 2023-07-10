@@ -34,6 +34,7 @@ public class SecurityConfiguration {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
             .requestMatchers("api/**").permitAll()
+            .requestMatchers("/admin/messages").hasAuthority("SUPERADMIN")
             .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "SUPERADMIN")
             .requestMatchers("/**").permitAll()
             .and().formLogin().loginPage("/login")

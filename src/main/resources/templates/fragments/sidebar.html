@@ -45,6 +45,17 @@
                         Categories
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a
+                        sec:authorize="hasAuthority('SUPERADMIN')"
+                        th:href="@{/admin/messages}"
+                        class="nav-link"
+                        th:classappend="${page == 'messages' ? 'active' : ''}"
+                    >
+                        <i class="fa-solid fa-envelope"></i>
+                        Messages
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
